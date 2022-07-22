@@ -103,7 +103,10 @@ class ParkingTransactionController extends Controller
 
     public function history()
     {
-        return view('pages.history.index');
+        $parkingHistory = ParkingTransaction::whereHas('parking_detail.payment_transaction', function($query){
+            $query->whereIn('status', ['settlement', 'pending', 'failure']);
+        })->get();
+        return view('pages.history.index', compact('parkingHistory'));
     }
 
     // Menghitung biaya yang perlu dibayar

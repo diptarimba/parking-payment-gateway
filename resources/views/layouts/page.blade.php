@@ -18,7 +18,7 @@
 
 @component('components.sidebar')
 <x-slot name="head">
-    <x-sidebar.ProfileInfo src="{{Auth::user()->avatar}}" name="{{Auth::user()->name}}"
+    <x-sidebar.ProfileInfo src="{{Auth::user()->avatar}}" name="{!!Auth::user()->name!!}"
         nameButton="Sign Out" linkButton="{{route('logout.index')}}" />
 </x-slot>
 @endcomponent

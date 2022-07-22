@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('code');
             $table->unsignedBigInteger('vehicle_id');
             $table->unsignedBigInteger('parking_location_id');
-            $table->string('payment_id')->nullable();
+            // $table->string('payment_id')->nullable();
             $table->timestamps();
         });
     }
