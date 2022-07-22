@@ -18,8 +18,8 @@
 
 @component('components.sidebar')
 <x-slot name="head">
-    <x-sidebar.ProfileInfo src="{{asset('assets/img/team/profile-picture-3.jpg')}}" name="Administrator"
-        nameButton="Sign Out" linkButton="#" />
+    <x-sidebar.ProfileInfo src="{{Auth::user()->avatar}}" name="{{Auth::user()->name}}"
+        nameButton="Sign Out" linkButton="{{route('logout.index')}}" />
 </x-slot>
 @endcomponent
 
@@ -27,6 +27,8 @@
 
     @component('components.topbar')
     @endcomponent
+
+    @yield('breadcrumb')
 
     {{-- Success Alert --}}
     @if(session('success'))
@@ -62,6 +64,9 @@
 
 @section('footer')
 
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <!-- Core -->
 <script src="{{asset('vendor/@popperjs/core/dist/umd/popper.min.js')}}"></script>
 <script src="{{asset('vendor/bootstrap/dist/js/bootstrap.min.js')}}"></script>
@@ -70,7 +75,7 @@
 <script src="{{asset('vendor/onscreen/dist/on-screen.umd.min.js')}}"></script>
 
 <!-- Slider -->
-<script src="{{asset('vendor/nouislider/distribute/nouislider.min.js')}}"></script>
+<script src="{{asset('vendor/nouislider/dist/nouislider.min.js')}}"></script>
 
 <!-- Smooth scroll -->
 <script src="{{asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js')}}"></script>

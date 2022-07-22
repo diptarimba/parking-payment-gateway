@@ -12,11 +12,22 @@ class ParkingTransaction extends Model
     protected $fillable = [
         'check_in',
         'check_out',
+        'check_out_gate',
         'user_id'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function parking_detail()
+    {
+        return $this->hasOne(ParkingDetail::class);
+    }
+
+    public function payment_transaction()
+    {
+        return $this->parking_detail()->payment_transaction();
     }
 }

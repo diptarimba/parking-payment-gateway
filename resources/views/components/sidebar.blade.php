@@ -26,14 +26,17 @@
             {{ $slot }}
             <x-sidebar.HeaderLogo title="Volt Overview" href="#" src="{{asset('assets/img/brand/light.svg')}}" />
             <x-sidebar.sparator />
-            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Emergency Contact" href="/emergency" />
-            <x-sidebar.SingleBadge icons="fa-solid fa-users fa-fw" title="Kanban" href="#" badge="Pro" />
+            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkin" href="{{route('checkin.index')}}" />
+            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkout" href="{{route('checkout.index')}}" />
+            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="History" href="{{route('history.index')}}" />
+            <x-sidebar.sparator />
+            {{-- <x-sidebar.SingleBadge icons="fa-solid fa-users fa-fw" title="Kanban" href="#" badge="Pro" />
             <x-sidebar.ParentHaveChild icons="fa-solid fa-table fa-fw" title="Tables" target="target1">
                 <x-sidebar.ChildHaveParent href="" name="Bootstrap Tables" />
             </x-sidebar.ParentHaveChild>
             <x-sidebar.ParentHaveChild icons="fa-solid fa-file fa-fw" title="Destination" target="targetDestionation">
                 <x-sidebar.ChildHaveParent href="/" name="Destination Category" />
-                {{-- <x-sidebar.ChildHaveParent href="" name="Destination Image" /> --}}
+                <x-sidebar.ChildHaveParent href="" name="Destination Image" />
                 <x-sidebar.ChildHaveParent href="/" name="Destination" />
             </x-sidebar.ParentHaveChild>
             <x-sidebar.ParentHaveChild icons="fa-brands fa-bitbucket fa-fw" title="User" target="TargetUser">
@@ -42,7 +45,7 @@
                 <x-sidebar.ChildHaveParent href="" name="User Activity Details" />
             </x-sidebar.ParentHaveChild>
             <x-sidebar.sparator />
-            <x-sidebar.SingleBadge icons="fa-solid fa-book fa-fw" title="Documentation" href="#" badge="v1.4" />
+            <x-sidebar.SingleBadge icons="fa-solid fa-book fa-fw" title="Documentation" href="#" badge="v1.4" /> --}}
             <x-sidebar.FooterLogo href="" title="Themesburg" src="{{asset('assets/img/themesberg.svg')}}" />
         </ul>
     </div>

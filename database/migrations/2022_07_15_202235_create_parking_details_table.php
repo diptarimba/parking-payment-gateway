@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parking_transaction_id')->references('id')->on('parking_transactions');
             $table->string('code');
             $table->unsignedBigInteger('vehicle_id');
+            $table->unsignedBigInteger('parking_location_id');
             $table->string('payment_id')->nullable();
             $table->timestamps();
         });

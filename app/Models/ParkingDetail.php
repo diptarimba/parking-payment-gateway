@@ -13,11 +13,27 @@ class ParkingDetail extends Model
         'parking_transaction_id',
         'code',
         'vehicle_id',
-        'payment_id'
+        'parking_location_id',
+        // 'payment_id'
     ];
 
     public function parking_transaction()
     {
         return $this->belongsTo(ParkingTransaction::class, 'parking_transaction_id');
+    }
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class, 'vehicle_id');
+    }
+
+    public function parking_location()
+    {
+        return $this->belongsTo(ParkingLocation::class, 'parking_location_id');
+    }
+
+    public function payment_transaction()
+    {
+        return $this->hasMany(PaymentTransaction::class);
     }
 }

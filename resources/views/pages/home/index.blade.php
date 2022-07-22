@@ -14,7 +14,7 @@
                             <i class="fa-solid fa-users"></i>
                         </div>
                         <div class="d-sm-none">
-                            <h2 class="fw-extrabold h5">Revenue</h2>
+                            <h2 class="fw-extrabold h5">Refenu</h2>
                             <h3 class="mb-1">$43,594</h3>
                         </div>
                     </div>
