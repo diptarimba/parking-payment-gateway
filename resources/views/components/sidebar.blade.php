@@ -29,7 +29,7 @@
             <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkin" href="{{route('checkin.index')}}" />
             <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkout" href="{{route('checkout.index')}}" />
             <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="History" href="{{route('history.index')}}" />
-            <x-sidebar.sparator />
+            {{-- <x-sidebar.sparator /> --}}
             {{-- <x-sidebar.SingleBadge icons="fa-solid fa-users fa-fw" title="Kanban" href="#" badge="Pro" />
             <x-sidebar.ParentHaveChild icons="fa-solid fa-table fa-fw" title="Tables" target="target1">
                 <x-sidebar.ChildHaveParent href="" name="Bootstrap Tables" />
