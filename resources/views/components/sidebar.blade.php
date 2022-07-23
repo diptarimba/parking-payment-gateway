@@ -26,9 +26,9 @@
             {{ $slot }}
             <x-sidebar.HeaderLogo title="Smart Parking" href="#" src="{{asset('assets/img/brand/light.svg')}}" />
             <x-sidebar.sparator />
-            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkin" href="{{route('checkin.index')}}" />
-            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkout" href="{{route('checkout.index')}}" />
-            <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="History" href="{{route('history.index')}}" />
+            <x-sidebar.Single icons="fa-solid fa-right-to-bracket fa-fw" title="Checkin" href="{{route('checkin.index')}}" />
+            <x-sidebar.Single icons="fa-solid fa-arrow-right-from-bracket fa-fw" title="Checkout" href="{{route('checkout.index')}}" />
+            <x-sidebar.Single icons="fa-solid fa-clock-rotate-left fa-fw" title="History" href="{{route('history.index')}}" />
             {{-- <x-sidebar.sparator /> --}}
             {{-- <x-sidebar.SingleBadge icons="fa-solid fa-users fa-fw" title="Kanban" href="#" badge="Pro" />
             <x-sidebar.ParentHaveChild icons="fa-solid fa-table fa-fw" title="Tables" target="target1">
