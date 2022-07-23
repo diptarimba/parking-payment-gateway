@@ -26,6 +26,7 @@
             {{ $slot }}
             <x-sidebar.HeaderLogo title="Smart Parking" href="#" src="{{asset('assets/img/brand/light.svg')}}" />
             <x-sidebar.sparator />
+            <x-sidebar.Single icons="fa-solid fa-house-user" title="Home" href="{{route('home.index')}}" />
             <x-sidebar.Single icons="fa-solid fa-right-to-bracket fa-fw" title="Checkin" href="{{route('checkin.index')}}" />
             <x-sidebar.Single icons="fa-solid fa-arrow-right-from-bracket fa-fw" title="Checkout" href="{{route('checkout.index')}}" />
             <x-sidebar.Single icons="fa-solid fa-clock-rotate-left fa-fw" title="History" href="{{route('history.index')}}" />

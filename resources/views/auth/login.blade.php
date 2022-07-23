@@ -75,7 +75,8 @@
                                             Remember me
                                         </label>
                                     </div>
-                                    <div><a href="./forgot-password.html" class="small text-right">Lost password?</a>
+                                    <div>
+                                        <a href="./forgot-password.html" class="small text-right">Lost password?</a>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +84,7 @@
                                 <button type="submit" class="btn btn-gray-800">Sign in</button>
                             </div>
                         </form>
-                        <div class="mt-3 mb-4 text-center">
+                        {{-- <div class="mt-3 mb-4 text-center">
                             <span class="fw-normal">or login with</span>
                         </div>
                         <div class="d-flex justify-content-center my-4">
@@ -99,7 +100,7 @@
                                 aria-label="github button" title="github button">
                                 <i class="fa-brands fa-github fa-fw"></i>
                             </a>
-                        </div>
+                        </div> --}}
                         <div class="d-flex justify-content-center align-items-center mt-4">
                             <span class="fw-normal">
                                 Not registered?

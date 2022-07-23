@@ -35,7 +35,7 @@ class ParkingTransactionController extends Controller
 
         // Kalau checkin di redirect ke checkout
         if($isCheckIn !== null){
-            return redirect()->route('checkout.index')->with('error', 'Silahkan checkin terlebih dahulu!');;
+            return redirect()->route('checkout.index')->with('error', 'Silahkan check out terlebih dahulu!');;
         }
 
         // generate code baru checkin
@@ -83,11 +83,11 @@ class ParkingTransactionController extends Controller
             ->whereNull('check_out')
             ->first();
 
-        if($parking == null){
-            return redirect()->route('checkin.index')->with('error', 'Silahkan checkin terlebih dahulu!');
-        }
-
         if($request->ajax()){
+
+            if($parking == null){
+                return response()->json(['result' => 'paid']);
+            }
 
             // Memanggil controller perhitungan biaya yang perlu dibayar
             $cost = $this->generateCost($request, $parking);
@@ -100,36 +100,13 @@ class ParkingTransactionController extends Controller
             return response()->json(['cost' => $cost]);
         }
 
+        if($parking == null){
+            return redirect()->route('checkin.index')->with('error', 'Silahkan check in terlebih dahulu!');
+        }
+
         // $parking = ParkingTransaction::with('parking_detail.vehicle')->whereUserId(Auth::user()->id)->whereNull('check_out')->first();
         $check_in = Carbon::parse($parking->check_in)->format('d F Y H:i:s A');
         return view('pages.checkout.index', compact('parking', 'check_in'));
-    }
-
-    public function history()
-    {
-        $parkingHistory = ParkingTransaction::whereHas('parking_detail.payment_transaction', function($query){
-            $query->whereIn('status', ['settlement', 'pending', 'failure']);
-        })->get();
-        return view('pages.history.index', compact('parkingHistory'));
-    }
-
-    public function detail($code)
-    {
-        $parkingDetail = ParkingTransaction::with(
-            'parking_detail.payment_transaction',
-            'parking_detail.parking_location'
-        )->whereHas('parking_detail', function($query) use($code){
-            $query->where('code', $code);
-        })
-        ->whereHas('parking_detail.payment_transaction', function($query){
-            $query->whereIn('status', ['settlement', 'pending']);
-        })->first();
-
-        $transactionTime = $parkingDetail->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->transaction_time;
-        $transactionStatus = $parkingDetail->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->status;
-        $cost = $parkingDetail->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->amount;
-
-        return view('pages.history.detail', compact('parkingDetail', 'transactionStatus', 'transactionTime', 'cost'));
     }
 
     // Menghitung biaya yang perlu dibayar
@@ -150,9 +127,12 @@ class ParkingTransactionController extends Controller
 
     public function generateSnapToken($cost = null, $parking = null )
     {
+        // redeclare code
+        $code = $parking->parking_detail->code;
+
         $params = array(
             'transaction_details' => array(
-                'order_id' => Str::random(12),
+                'order_id' => $code,
                 'gross_amount' => $cost,
             ),
             'customer_details' => array(
@@ -160,27 +140,13 @@ class ParkingTransactionController extends Controller
                 'email' => $parking->user->email,
             ),
         );
-        $checkPayment = $parking->whereHas('parking_detail.payment_transaction', function($query) use ($cost){
-            return $query->where('amount', '=', $cost);
-        })->first();
-        // return response()->json($checkPayment);
-        if($checkPayment == null){
-            // Cancel Midtrans Request Transaction which cost not relevant
-            $parking->parking_detail->payment_transaction->map(function($query){
-                $query->update(['status' => 'Not Match']);
-            });
-            // Generate new token
-            $snapToken = Snap::getSnapToken($params);
-            // Save token
-            $parking->parking_detail->payment_transaction()->create([
-                'amount' => $cost,
-                'order_id' => $params['transaction_details']['order_id'],
-                'snap_token' => $snapToken
-            ]);
-        }else{
-            // Return exist and relevant token
-            $snapToken = $checkPayment->parking_detail->payment_transaction->where('amount', '=', $cost)->first()->snap_token;
-        }
+        // Generate new token
+        $snapToken = Snap::getSnapToken($params);
+        // Save token
+        $parking->parking_detail->payment_transaction()->updateOrCreate([
+            'amount' => $cost,
+            'order_id' => $code,
+        ]);
 
         return response()->json(['token' => $snapToken]);
     }

@@ -14,7 +14,7 @@ class ParkingDetail extends Model
         'code',
         'vehicle_id',
         'parking_location_id',
-        // 'payment_id'
+        'exp_code'
     ];
 
     public function parking_transaction()
@@ -34,6 +34,6 @@ class ParkingDetail extends Model
 
     public function payment_transaction()
     {
-        return $this->hasMany(PaymentTransaction::class);
+        return $this->hasOne(PaymentTransaction::class);
     }
 }

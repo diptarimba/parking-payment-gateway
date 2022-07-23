@@ -18,10 +18,10 @@ class ParkingLocationSeeder extends Seeder
     {
         ParkingLocation::factory()->count(4)->state(
             new Sequence(
-                ['image' => '/storage/placeholder/location/tsmMajapahit.jpg', 'name' => 'Transmart Majapahit'],
-                ['image' => '/storage/placeholder/location/paragon.jpg', 'name' => 'Paragon Mall'],
-                ['image' => '/storage/placeholder/location/javamall.jpg', 'name' => 'Java Supermall'],
-                ['image' => '/storage/placeholder/location/lawangsewu.jpg', 'name' => 'Lawang Sewu'],
+                ['location_code' => 'TSMMPHT', 'image' => '/storage/placeholder/location/tsmMajapahit.jpg', 'name' => 'Transmart Majapahit'],
+                ['location_code' => 'PARAGON', 'image' => '/storage/placeholder/location/paragon.jpg', 'name' => 'Paragon Mall'],
+                ['location_code' => 'JAVASPM', 'image' => '/storage/placeholder/location/javamall.jpg', 'name' => 'Java Supermall'],
+                ['location_code' => 'LWGSEWU', 'image' => '/storage/placeholder/location/lawangsewu.jpg', 'name' => 'Lawang Sewu'],
             )
         )->create();
     }

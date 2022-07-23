@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('payment_type')->nullable();
             $table->string('order_id');
-            $table->String('snap_token');
             $table->string('transaction_time')->nullable();
             $table->unsignedBigInteger('parking_detail_id');
             $table->bigInteger('amount');

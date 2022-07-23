@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaymentTransaction;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,8 +21,12 @@ class NotificationController extends Controller
                 'payment_type' => $request->payment_type
             ]);
         if($request->transaction_status == 'settlement'){
+            $checkout_time = Carbon::now();
             $payment->first()->parking_detail()->first()->parking_transaction()->update([
-                'check_out' => Carbon::now()
+                'check_out' => $checkout_time
+            ]);
+            $payment->first()->parking_detail()->update([
+                'exp_code' => $checkout_time->addMinutes(Setting::findOrFail(1)->value)
             ]);
         }
     }

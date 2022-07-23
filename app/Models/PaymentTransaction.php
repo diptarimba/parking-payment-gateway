@@ -12,9 +12,8 @@ class PaymentTransaction extends Model
     protected $fillable = [
         'payment_type',
         'order_id',
-        'snap_token',
         'transaction_time',
-        'parking_detail',
+        'parking_detail_id',
         'amount',
         'status'
     ];

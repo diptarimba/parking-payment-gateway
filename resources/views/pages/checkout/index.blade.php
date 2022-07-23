@@ -16,7 +16,7 @@
 />
 <x-cards.single>
     <x-slot name="header">
-        <x-cards.header title="Rady Check Out"/>
+        <x-cards.header title="Ready Check Out"/>
     </x-slot>
     <x-slot name="body">
         <table class="table table-striped">
@@ -56,11 +56,15 @@
                     type: 'get',
                     success: function(data) { // check if available
                         // status.text('Waiting for Scanning!');
-                        console.log(data)
                         if (typeof data.cost !== 'undefined') { // get and check data value
                             var cost = new Intl.NumberFormat().format(data.cost)
                             console.log(cost)
                             status.text('Rp. ' + cost);
+                        }
+
+                        if (typeof data.result !== 'undefined') { // get and check data value
+                            clearTimeout(timer)
+                            window.location.href = '{{route('history.index')}}';
                         }
                     },
                     error: function() { // error logging

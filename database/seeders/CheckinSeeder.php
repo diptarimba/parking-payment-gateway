@@ -6,6 +6,7 @@ use App\Models\ParkingTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Ramsey\Uuid\Uuid;
 
 class CheckinSeeder extends Seeder
 {
@@ -24,8 +25,7 @@ class CheckinSeeder extends Seeder
         $parkingCheckin->parking_detail()->create([
             'vehicle_id' => 1,
             'parking_location_id' => 1,
-            'payment_id' => null,
-            'code' => '5ca2d554-54f3-49d5-b22a-79282c972977'
+            'code' => Uuid::uuid4()
         ]);
     }
 }

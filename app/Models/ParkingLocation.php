@@ -10,7 +10,7 @@ class ParkingLocation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'latitude', 'longitude', 'image'
+        'name', 'description', 'latitude', 'longitude', 'image', 'location_code'
     ];
 
     public function parking_detail()

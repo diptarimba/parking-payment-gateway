@@ -18,7 +18,7 @@
     </x-slot>
     <x-slot name="body">
         <div class="table-responsive">
-            <table class="table table-centered table-nowrap mb-0 rounded">
+            <table class="table table-centered table-nowrap mb-0 rounded datatables-target-exec">
                 <thead>
                     <th>No</th>
                     <th>Check In</th>
@@ -28,16 +28,7 @@
                     <th>Action</th>
                 </thead>
                 <tbody>
-                    @foreach ($parkingHistory as $each)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{Carbon\Carbon::parse($each->check_in)->format('d F Y H:i:s A')}}</td>
-                            <td>{{Carbon\Carbon::parse($each->check_out)->format('d F Y H:i:s A') ?? 'Belum Check Out'}}</td>
-                            <td>{{$each->parking_detail->vehicle->name}}</td>
-                            <td>Rp. {{ number_format($each->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->amount, 0, ",", ".") }}</td>
-                            <td><a target="_blank" href="{{route('history.detail', ['code' => $each->parking_detail->code])}}" class="btn btn-primary">History</a></td>
-                        </tr>
-                    @endforeach
+
                 </tbody>
             </table>
         </div>
@@ -46,5 +37,29 @@
 @endsection
 
 @section('footer-custom')
-
+<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/dataTables.bootstrap5.min.js')}}"></script>
+<script>
+    $(document).ready(() => {
+        var table = $('.datatables-target-exec').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('history.index') }}",
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', sortable: false, orderable: false,
+                searchable: false},
+            {data: 'check_in', name: 'check_in'},
+            {data: 'check_out', name: 'check_out'},
+            {data: 'vehicle', name: 'vehicle'},
+            {data: 'cost', name: 'cost'},
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            },
+        ]
+    });
+    })
+</script>
 @endsection
