@@ -34,7 +34,7 @@ class LoginController extends Controller
         if($auth){
             return redirect()
 				->intended(route('home.index'))
-				->with('status','Sukses Login!');
+				->with('success','Sukses Login!');
         }else{
             return back()->withErrors('username / password anda salah!');
         }
