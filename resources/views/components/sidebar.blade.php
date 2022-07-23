@@ -24,7 +24,7 @@
         </div>
         <ul class="nav flex-column pt-3 pt-md-0">
             {{ $slot }}
-            <x-sidebar.HeaderLogo title="Volt Overview" href="#" src="{{asset('assets/img/brand/light.svg')}}" />
+            <x-sidebar.HeaderLogo title="Smart Parking" href="#" src="{{asset('assets/img/brand/light.svg')}}" />
             <x-sidebar.sparator />
             <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkin" href="{{route('checkin.index')}}" />
             <x-sidebar.Single icons="fa-solid fa-chart-pie fa-fw" title="Checkout" href="{{route('checkout.index')}}" />
@@ -46,7 +46,7 @@
             </x-sidebar.ParentHaveChild>
             <x-sidebar.sparator />
             <x-sidebar.SingleBadge icons="fa-solid fa-book fa-fw" title="Documentation" href="#" badge="v1.4" /> --}}
-            <x-sidebar.FooterLogo href="" title="Themesburg" src="{{asset('assets/img/themesberg.svg')}}" />
+            {{-- <x-sidebar.FooterLogo href="" title="Themesburg" src="{{asset('assets/img/themesberg.svg')}}" /> --}}
         </ul>
     </div>
 </nav>

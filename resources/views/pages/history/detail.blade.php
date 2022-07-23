@@ -24,11 +24,11 @@
             <tbody>
                 <tr>
                     <th>Check In</th>
-                    <td>{{$parkingDetail->check_in}}</td>
+                    <td>{{Carbon\Carbon::parse($parkingDetail->check_in)->format('d F Y H:i:s A')}}</td>
                 </tr>
                 <tr>
                     <th>Check Out</th>
-                    <td>{{$parkingDetail->check_out}}</td>
+                    <td>{{Carbon\Carbon::parse($parkingDetail->check_out)->format('d F Y H:i:s A')}}</td>
                 </tr>
                 <tr>
                     <th>Location</th>
@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                     <th>Transaction Time</th>
-                    <td>{{$transactionTime}}</td>
+                    <td>{{Carbon\Carbon::parse($transactionTime)->format('d F Y H:i:s A')}}</td>
                 </tr>
                 <tr>
                     <th>Transaction Status</th>
