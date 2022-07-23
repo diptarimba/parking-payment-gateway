@@ -16,7 +16,7 @@
 />
 <x-cards.single>
     <x-slot name="header">
-        <x-cards.header title="Checkout"/>
+        <x-cards.header title="Rady Check Out"/>
     </x-slot>
     <x-slot name="body">
         <table class="table table-striped">

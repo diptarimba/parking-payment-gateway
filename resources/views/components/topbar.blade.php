@@ -132,7 +132,7 @@
               <div class="media d-flex align-items-center">
                 <img class="avatar rounded-circle" alt="Image placeholder" src="{{Auth::user()->avatar}}">
                 <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                  <span class="mb-0 font-small fw-bold text-gray-900">Bonnie Green</span>
+                  <span class="mb-0 font-small fw-bold text-gray-900">{!! Auth::user()->name !!}</span>
                 </div>
               </div>
             </a>

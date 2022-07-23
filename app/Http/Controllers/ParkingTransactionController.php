@@ -35,7 +35,7 @@ class ParkingTransactionController extends Controller
 
         // Kalau checkin di redirect ke checkout
         if($isCheckIn !== null){
-            return redirect()->route('checkout.index');
+            return redirect()->route('checkout.index')->with('error', 'Silahkan checkin terlebih dahulu!');;
         }
 
         // generate code baru checkin
@@ -83,6 +83,10 @@ class ParkingTransactionController extends Controller
             ->whereNull('check_out')
             ->first();
 
+        if($parking == null){
+            return redirect()->route('checkin.index')->with('error', 'Silahkan checkin terlebih dahulu!');
+        }
+
         if($request->ajax()){
 
             // Memanggil controller perhitungan biaya yang perlu dibayar
@@ -107,6 +111,25 @@ class ParkingTransactionController extends Controller
             $query->whereIn('status', ['settlement', 'pending', 'failure']);
         })->get();
         return view('pages.history.index', compact('parkingHistory'));
+    }
+
+    public function detail($code)
+    {
+        $parkingDetail = ParkingTransaction::with(
+            'parking_detail.payment_transaction',
+            'parking_detail.parking_location'
+        )->whereHas('parking_detail', function($query) use($code){
+            $query->where('code', $code);
+        })
+        ->whereHas('parking_detail.payment_transaction', function($query){
+            $query->whereIn('status', ['settlement', 'pending']);
+        })->first();
+
+        $transactionTime = $parkingDetail->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->transaction_time;
+        $transactionStatus = $parkingDetail->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->status;
+        $cost = $parkingDetail->parking_detail->payment_transaction->whereNotIn('status', ['Not Match'])->sortByDesc('id')->first()->amount;
+
+        return view('pages.history.detail', compact('parkingDetail', 'transactionStatus', 'transactionTime', 'cost'));
     }
 
     // Menghitung biaya yang perlu dibayar

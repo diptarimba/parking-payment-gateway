@@ -10,7 +10,7 @@
     <x-breadcrumbs category="Checkin" href="{{ route('checkin.index') }}" current="index" />
     <x-cards.single>
         <x-slot name="header">
-            <x-cards.header title="Checkin" />
+            <x-cards.header title="Ready Check In" />
         </x-slot>
         <x-slot name="body">
             <div class="text-center">

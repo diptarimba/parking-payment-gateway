@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:web']], function(){
     Route::post('/checkin', [ParkingTransactionController::class, 'checkin_post'])->name('checkin.store');
     Route::get('/checkout', [ParkingTransactionController::class, 'checkout'])->name('checkout.index');
     Route::get('/history', [ParkingTransactionController::class, 'history'])->name('history.index');
+    Route::get('/history/{code}/detail', [ParkingTransactionController::class, 'detail'])->name('history.detail');
 
     Route::get('/auth/logout', [LoginController::class, 'logout'])->name('logout.index');
 
