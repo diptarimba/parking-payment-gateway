@@ -14,7 +14,8 @@ class ParkingDetail extends Model
         'code',
         'vehicle_id',
         'parking_location_id',
-        'exp_code'
+        'exp_code',
+        'posted'
     ];
 
     public function parking_transaction()

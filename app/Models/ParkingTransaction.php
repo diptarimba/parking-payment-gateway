@@ -12,7 +12,6 @@ class ParkingTransaction extends Model
     protected $fillable = [
         'check_in',
         'check_out',
-        'check_out_gate',
         'user_id'
     ];
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamp('check_in');
             $table->timestamp('check_out')->nullable();
-            $table->boolean('check_out_gate')->default(0);
+            $table->boolean('posted')->default(0);
             $table->unsignedBigInteger('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
