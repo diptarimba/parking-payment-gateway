@@ -22,7 +22,8 @@ class RegisterController extends Controller
         ]);
 
         User::create(array_merge($request->all(), [
-            'avatar' => 'storage/placeholder/avatar/default-profile.png'
+            'avatar' => 'storage/placeholder/avatar/default-profile.png',
+            'password' => bcrypt($request->password)
         ]));
 
         return redirect()->route('login.index')->with('success', 'Success Register, Please Login First!');

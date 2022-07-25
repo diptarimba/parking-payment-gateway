@@ -1,2 +1,7 @@
 *
 !.gitignore
+!placeholder
+!placeholder/avatar
+!placeholder/avatar/*
+!placeholder/location
+!placeholder/location/*
