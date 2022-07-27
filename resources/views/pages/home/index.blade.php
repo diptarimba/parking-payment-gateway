@@ -45,7 +45,7 @@
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Total Location</h2>
-                            <h3 class="fw-extrabold mb-2">{{number_format($totalParking, 0, ",", ".")}}</h3>
+                            <h3 class="fw-extrabold mb-2">{{number_format($totalLocation, 0, ",", ".")}}</h3>
                         </div>
                     </div>
                 </div>

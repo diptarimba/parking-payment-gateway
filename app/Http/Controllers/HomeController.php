@@ -12,9 +12,9 @@ class HomeController extends Controller
     public function index()
     {
         $totalParking = ParkingTransaction::where('user_id', Auth::user()->id)->count();
-        $totalLocation = ParkingDetail::whereHas('parking_transaction', function($query){
+        $totalLocation = ParkingDetail::select('parking_location_id')->whereHas('parking_transaction', function($query){
             $query->where('user_id', Auth::user()->id);
-        })->groupBy('parking_location_id')->count();
+        })->groupBy('parking_location_id')->get()->count();
         return view('pages.home.index', compact('totalParking', 'totalLocation'));
     }
 }
