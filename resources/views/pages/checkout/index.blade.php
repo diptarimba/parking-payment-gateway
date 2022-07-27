@@ -88,12 +88,6 @@
                                 clearTimeout(timer)
                                 window.location.href = '{{route('history.index')}}';
                             }
-
-                            if(data.result === 'expire'){
-                                clearTimeout(timer)
-                                window.localStorage.clear();
-                                window.location.reload();
-                            }
                         }
                     },
                     error: function() { // error logging

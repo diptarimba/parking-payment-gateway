@@ -87,11 +87,6 @@ class ParkingTransactionController extends Controller
 
         if($request->ajax()){
 
-            if($parking->parking_detail->payment_transaction->status == 'expire')
-            {
-                return response()->json(['result' => 'expire']);
-            }
-
             if($parking == null){
                 return response()->json(['result' => 'paid']);
             }
