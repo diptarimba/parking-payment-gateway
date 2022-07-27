@@ -121,7 +121,7 @@ class ParkingTransactionController extends Controller
         // Calculate selisih jam masuk dan keluar
         $hoursSpend = $check_now->diffInHours($check_in);
         // Calculate cost
-        $cost = $parking->parking_detail->first()->vehicle->price + ($hoursSpend * $parking->parking_detail->first()->vehicle->add);
+        $cost = $parking->parking_detail->vehicle->price + ($hoursSpend * $parking->parking_detail->vehicle->add);
 
         // Kembalikan data kepada pemanggil
         return $cost;

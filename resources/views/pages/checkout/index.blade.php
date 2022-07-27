@@ -27,11 +27,11 @@
                 </tr>
                 <tr>
                     <th>Location</th>
-                    <td>{{$parking->parking_detail->first()->parking_location->name}}</td>
+                    <td>{{$parking->parking_detail->parking_location->name}}</td>
                 </tr>
                 <tr>
                     <th>Type Vehicle</th>
-                    <td>{{$parking->parking_detail->first()->vehicle->name}}</td>
+                    <td>{{$parking->parking_detail->vehicle->name}}</td>
                 </tr>
                 <tr>
                     <th>Cost</th>
