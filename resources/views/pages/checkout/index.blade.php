@@ -42,6 +42,27 @@
         <button id="pay-button" class="btn btn-success text-white mx-1 my-1">Bayar & Checkout</button>
     </x-slot>
 </x-cards.single>
+<!-- Modal -->
+<div class="modal fade" id="qrcode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">QR Code</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <div class="text-center">
+            <img id="img-qrcode" style="max-width: 200px" src="" alt="">
+        </div>
+        </div>
+        <div class="modal-footer">
+          <a href="" class="btn gopay-pay btn-success">Pay Gopay!</a>
+          <a href="path_to_file" class="btn qris-download btn-warning" download="qrcode">Download</a>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('footer-custom')
@@ -63,8 +84,16 @@
                         }
 
                         if (typeof data.result !== 'undefined') { // get and check data value
-                            clearTimeout(timer)
-                            window.location.href = '{{route('history.index')}}';
+                            if(data.result === 'paid'){
+                                clearTimeout(timer)
+                                window.location.href = '{{route('history.index')}}';
+                            }
+
+                            if(data.result === 'expire'){
+                                clearTimeout(timer)
+                                window.localStorage.clear();
+                                window.location.reload();
+                            }
                         }
                     },
                     error: function() { // error logging
@@ -88,30 +117,22 @@
                     url: '{{route('checkout.index')}}',
                     dataType: 'json',
                     data: {
-                        checkout_type: 'checkout'
+                        parking_type: 'checkout'
                     },
                     type: 'get',
                     success: function(data) { // check if available
                         // status.text('Waiting for Scanning!');
-                        var tokenBayar = data.token
-                        window.snap.pay(tokenBayar, {
-                            onSuccess: function(result){
-                                /* You may add your own implementation here */
-                                alert("payment success!"); console.log(result);
-                            },
-                            onPending: function(result){
-                                /* You may add your own implementation here */
-                                alert("wating your payment!"); console.log(result);
-                            },
-                            onError: function(result){
-                                /* You may add your own implementation here */
-                                alert("payment failed!"); console.log(result);
-                            },
-                            onClose: function(){
-                                /* You may add your own implementation here */
-                                alert('you closed the popup without finishing the payment');
-                            }
-                        })
+                        console.log(data);
+                        if(data.result === 'created')
+                        {
+                            window.localStorage.setItem('qr-code', data.data.qr_code );
+                            window.localStorage.setItem('gopay', data.data.gopay );
+                        }
+
+                        $('#img-qrcode').attr('src', window.localStorage.getItem('qr-code'))
+                        $('.qris-download').attr('href', window.localStorage.getItem('qr-code'))
+                        $('.gopay-pay').attr('href', window.localStorage.getItem('gopay'))
+                        $('#qrcode').modal('toggle');
                     },
                     error: function() { // error logging
                         console.log('Error!');

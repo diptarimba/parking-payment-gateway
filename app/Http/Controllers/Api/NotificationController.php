@@ -14,11 +14,13 @@ class NotificationController extends Controller
 {
     // Menyimpan data konfirmasi dari midtrans
     public function index(Request $request){
+        Log::info(json_encode($request->toArray()));
         $payment = PaymentTransaction::
             with('parking_detail', 'parking_detail.parking_transaction')
             ->whereOrderId($request->order_id);
         $updatePayment = $payment
             ->update([
+                'transaction_id' => $request->transaction_id,
                 'status' => $request->transaction_status,
                 'transaction_time' => $request->transaction_time,
                 'payment_type' => $request->payment_type

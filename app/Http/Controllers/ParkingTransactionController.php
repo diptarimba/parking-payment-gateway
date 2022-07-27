@@ -6,8 +6,10 @@ use App\Models\ParkingTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Midtrans\CoreApi;
 use Midtrans\Snap;
 use Midtrans\Transaction;
 use Ramsey\Uuid\Uuid;
@@ -85,6 +87,11 @@ class ParkingTransactionController extends Controller
 
         if($request->ajax()){
 
+            if($parking->parking_detail->payment_transaction->status == 'expire')
+            {
+                return response()->json(['result' => 'expire']);
+            }
+
             if($parking == null){
                 return response()->json(['result' => 'paid']);
             }
@@ -92,10 +99,10 @@ class ParkingTransactionController extends Controller
             // Memanggil controller perhitungan biaya yang perlu dibayar
             $cost = $this->generateCost($request, $parking);
 
-            if(isset($request->checkout_type))
+            if(isset($request->parking_type))
             {
                 // Memanggil controller generator snap token midtrans
-                return $this->generateSnapToken($cost, $parking);
+                return $this->getQRCode($cost, $parking);
             }
             return response()->json(['cost' => $cost]);
         }
@@ -125,10 +132,30 @@ class ParkingTransactionController extends Controller
         return $cost;
     }
 
-    public function generateSnapToken($cost = null, $parking = null )
+    public function getQRCode($cost = null, $parking = null )
     {
         // redeclare code
         $code = $parking->parking_detail->code;
+        $payment = $parking->parking_detail->payment_transaction;
+        $status = $payment->status ?? null;
+        $amount = $payment->amount ?? null;
+
+        Log::info('cost ' . $cost );
+        Log::info('amount ' . $amount);
+
+        if($status == 'pending' && $cost == $amount)
+        {
+            return response()->json([
+                'result' => 'pending',
+                'data' => []
+            ]);
+        }
+        elseif ($status == 'pending' && $cost !== $amount)
+        {
+            Transaction::cancel($code);
+        }
+
+
 
         $params = array(
             'transaction_details' => array(
@@ -139,15 +166,27 @@ class ParkingTransactionController extends Controller
                 'first_name' => $parking->user->name,
                 'email' => $parking->user->email,
             ),
+            'payment_type' => 'gopay',
+            'gopay' => array(
+                'enable_callback' =>  true,
+                'callback_url' =>  route('history.index')
+            )
         );
-        // Generate new token
-        $snapToken = Snap::getSnapToken($params);
+        // Generate Request
+        $response = CoreApi::charge($params);
+        Log::info(json_encode($response));
         // Save token
         $parking->parking_detail->payment_transaction()->updateOrCreate([
             'amount' => $cost,
             'order_id' => $code,
         ]);
 
-        return response()->json(['token' => $snapToken]);
+        return response()->json([
+            'result' => 'created',
+            'data' => [
+                'qr_code' => $response->actions[0]->url,
+                'gopay' => $response->actions[1]->url
+            ]
+        ]);
     }
 }
