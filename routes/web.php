@@ -39,4 +39,5 @@ Route::group(['middleware' => ['auth:web']], function(){
 
 });
 
+
 // Route::get('/', [ParkingTransactionController::class, 'checkin'])->name('guest.checkin.index');

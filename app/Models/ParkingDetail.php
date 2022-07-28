@@ -14,6 +14,7 @@ class ParkingDetail extends Model
         'code',
         'vehicle_id',
         'parking_location_id',
+        'exit_gate_open',
         'exp_code',
         'posted'
     ];

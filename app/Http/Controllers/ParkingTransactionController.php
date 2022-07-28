@@ -150,8 +150,6 @@ class ParkingTransactionController extends Controller
             Transaction::cancel($code);
         }
 
-
-
         $params = array(
             'transaction_details' => array(
                 'order_id' => $code,

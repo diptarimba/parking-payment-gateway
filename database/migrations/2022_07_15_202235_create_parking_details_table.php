@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('vehicle_id');
             $table->unsignedBigInteger('parking_location_id');
             $table->string('exp_code')->nullable();
+            $table->string('exit_gate_open')->nullable();
             $table->timestamps();
         });
     }

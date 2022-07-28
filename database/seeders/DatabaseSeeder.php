@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ParkingLocationSeeder::class);
         $this->call(SettingSeeder::class);
 
-        $this->call(CheckinSeeder::class);
+        // $this->call(CheckinSeeder::class);
     }
 }

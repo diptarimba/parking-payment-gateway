@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\IotController;
 use App\Http\Controllers\Api\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/notification', [NotificationController::class, 'index']);
+Route::post('/iot/machine', [IotController::class, 'receiver']);
 
