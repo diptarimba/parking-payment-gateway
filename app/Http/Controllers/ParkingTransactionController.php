@@ -134,8 +134,19 @@ class ParkingTransactionController extends Controller
         $check_now = Carbon::now();
         // Calculate selisih jam masuk dan keluar
         $hoursSpend = $check_now->diffInHours($check_in);
+        // Add price to the parking time
+        $add = $parking->parking_detail->vehicle->add;
+
         // Calculate cost
-        $cost = $parking->parking_detail->vehicle->price + ($hoursSpend * $parking->parking_detail->vehicle->add);
+        $parkingCheck4Cost = ParkingTransaction::with('parking_detail', function($query) use ($parking){
+            $query->where('code', $parking->parking_detail->code);
+        })->where('user_id', $parking->user_id)->count();
+
+        if($parkingCheck4Cost == 1){
+            $cost = $parking->parking_detail->vehicle->price + ($hoursSpend * $add);
+        }else{
+            $cost = $hoursSpend == 0? 1 * $add : $hoursSpend * $add;
+        }
 
         // Kembalikan data kepada pemanggil
         return $cost;
