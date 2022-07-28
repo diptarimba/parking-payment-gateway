@@ -40,17 +40,31 @@ class ParkingTransactionController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Silahkan check out terlebih dahulu!');;
         }
 
-        // generate code baru checkin
-        $exists = 1;
-        while($exists){
-            $code = Uuid::uuid4();
-            $check = ParkingTransaction::whereHas('parking_detail', function($query) use ($code){
-                $query->where('code', $code);
-            })->first();
-            $exists = $check == null ? 0 : 1;
+        $user = Auth::guard('web')->user()->id;
+
+        // Check Gate Sudah Terbuka Atau Belum
+        $parkingCheck = ParkingTransaction::with('parking_detail')
+            ->whereHas('parking_detail', function($query){
+                $query->whereNull('exit_gate_open');
+            })->where('user_id', $user)
+            ->first();
+
+        if($parkingCheck == null){
+            // generate code baru checkin
+            $exists = 1;
+            while($exists){
+                $code = Uuid::uuid4();
+                $check = ParkingTransaction::whereHas('parking_detail', function($query) use ($code){
+                    $query->where('code', $code);
+                })->first();
+                $exists = $check == null ? 0 : 1;
+            }
+        }else{
+            // Menggunakan Code Lama, karena orangnya belum keluar
+            $code = $parkingCheck->parking_detail->code;
         }
 
-        $user = Auth::guard('web')->user()->id;
+
         return view('pages.checkin.index', compact('code', 'user'));
     }
 
