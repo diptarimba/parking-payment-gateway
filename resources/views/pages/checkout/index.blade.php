@@ -57,7 +57,8 @@
         </div>
         <div class="modal-footer">
           <a href="" class="btn gopay-pay btn-success">Pay Gopay!</a>
-          <a href="path_to_file" class="btn qris-download btn-warning" download="qrcode">Download</a>
+          {{-- <a href="path_to_file" class="btn qris-download btn-warning" download="qrcode">Download</a> --}}
+          <button class="btn qris-download btn-warning">Download</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
         </div>
       </div>
@@ -67,6 +68,22 @@
 
 @section('footer-custom')
 <script>
+    function forceDownload(url, fileName){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = "blob";
+        xhr.onload = function(){
+            var urlCreator = window.URL || window.webkitURL;
+            var imageUrl = urlCreator.createObjectURL(this.response);
+            var tag = document.createElement('a');
+            tag.href = imageUrl;
+            tag.download = fileName;
+            document.body.appendChild(tag);
+            tag.click();
+            document.body.removeChild(tag);
+        }
+        xhr.send();
+    }
     $(document).ready(() => {
 
         function refresh() {
@@ -124,7 +141,7 @@
                         }
 
                         $('#img-qrcode').attr('src', window.localStorage.getItem('qr-code'))
-                        $('.qris-download').attr('href', window.localStorage.getItem('qr-code'))
+                        $('.qris-download').attr('onClick', 'forceDownload(\''+window.localStorage.getItem('qr-code')+'\', \'qris.png\')')
                         $('.gopay-pay').attr('href', window.localStorage.getItem('gopay'))
                         $('#qrcode').modal('toggle');
                     },
@@ -135,6 +152,8 @@
 	        // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
 
 	      });
+
+
     })
 </script>
 @endsection
