@@ -159,6 +159,7 @@ class ParkingTransactionController extends Controller
         $payment = $parking->parking_detail->payment_transaction;
         $status = $payment->status ?? null;
         $amount = $payment->amount ?? null;
+        $order_id = $payment->order_id ?? null;
 
         Log::info('cost ' . $cost );
         Log::info('amount ' . $amount);
@@ -170,14 +171,14 @@ class ParkingTransactionController extends Controller
                 'data' => []
             ]);
         }
-        elseif ($status == 'pending' && $cost !== $amount)
+        elseif ($status == 'pending' && $cost !== $amount && isset($order_id))
         {
-            Transaction::cancel($code);
+            Transaction::cancel($order_id);
         }
-
+        $payment_code = $parking->parking_detail->parking_location->location_code.'-'.$code.'-'.substr(strtotime(now()),0,4);
         $params = array(
             'transaction_details' => array(
-                'order_id' => $code,
+                'order_id' => $payment_code,
                 'gross_amount' => $cost,
             ),
             'customer_details' => array(
@@ -196,7 +197,7 @@ class ParkingTransactionController extends Controller
         // Save token
         $parking->parking_detail->payment_transaction()->updateOrCreate([
             'amount' => $cost,
-            'order_id' => $code,
+            'order_id' => $payment_code,
         ]);
 
         return response()->json([
