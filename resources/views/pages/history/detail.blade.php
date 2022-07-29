@@ -52,6 +52,7 @@
                 </tr>
             </tbody>
         </table>
+        <div class="text-end"><a href="?print=true" class="mx-1 my-1 btn btn-primary">Print</a></div>
     </x-slot>
 </x-cards.single>
 @endsection

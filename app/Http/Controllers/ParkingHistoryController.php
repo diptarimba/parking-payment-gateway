@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ParkingTransaction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +43,7 @@ class ParkingHistoryController extends Controller
         return view('pages.history.index');
     }
 
-    public function detail($code)
+    public function detail(Request $request, $code)
     {
         $parkingDetail = ParkingTransaction::with(
             'parking_detail.payment_transaction',
@@ -58,6 +59,14 @@ class ParkingHistoryController extends Controller
         $transactionTime = $payment->transaction_time;
         $transactionStatus = $payment->status;
         $cost = $payment->amount;
+
+        if (isset($request->print))
+        {
+            if($request->print == true){
+                $pdf = Pdf::loadView('pages.print.index', compact('parkingDetail', 'transactionStatus', 'transactionTime', 'cost'));
+                return $pdf->setPaper('a5')->download('invoice.pdf');
+            }
+        }
 
         return view('pages.history.detail', compact('parkingDetail', 'transactionStatus', 'transactionTime', 'cost'));
     }
