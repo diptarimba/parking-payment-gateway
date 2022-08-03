@@ -24,13 +24,14 @@ class CheckinSeeder extends Seeder
         // {"parking_type":"checkout","timestamp":"2022-07-29 02:59:00","user_id":1,"code":"c245e483-18b9-41dc-bf18-01d6d5ddb151"}
 
         $parkingCheckin = ParkingTransaction::create([
-            'check_in' => Carbon::now()->subHours(rand(1,10))->format('Y-m-d H:i:s'),
+            //'check_in' => Carbon::now()->subHours(rand(1,10))->format('Y-m-d H:i:s'),
+            'check_in' => Carbon::now()->format('Y-m-d H:i:s'),
             'user_id' => 1
         ]);
 
         $parkingCheckin->parking_detail()->create([
             'vehicle_id' => 1,
-            'parking_location_id' => 2,
+            'parking_location_id' => 1,
             'code' => Uuid::uuid4()
         ]);
     }
