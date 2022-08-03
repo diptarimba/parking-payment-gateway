@@ -17,4 +17,10 @@ class ParkingLocation extends Model
     {
         return $this->hasMany(ParkingDetail::class);
     }
+
+    public function parking_slot()
+    {
+        return $this->hasMany(ParkingSlot::class);
+    }
+
 }

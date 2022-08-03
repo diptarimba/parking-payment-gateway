@@ -2,55 +2,62 @@
 
 @section('tab-title', 'Dashboard')
 
+@section('header-custom')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @section('content')
 <div class="row mt-5">
-    <div class="col-xl-6 col-sm-6 col-12">
-        <div class="card card-outline card-primary mt-2 border-0">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div
-                        class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                        <div class="icon-shape icon-shape-secondary rounded me-4 me-sm-0">
-                            <i class="fa-solid fa-square-parking"></i>
-                        </div>
-                        <div class="d-sm-none">
-                            <h2 class="fw-extrabold h5">Total Parking</h2>
-                            <h3 class="mb-1">{{number_format($totalParking, 0, ",", ".")}}</h3>
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-7 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Total Parking</h2>
-                            <h3 class="fw-extrabold mb-2">{{number_format($totalParking, 0, ",", ".")}}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-6 col-sm-6 col-12">
-        <div class="card card-outline card-primary mt-2 border-0">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div
-                        class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                        <div class="icon-shape icon-shape-secondary rounded me-4 me-sm-0">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div class="d-sm-none">
-                            <h2 class="fw-extrabold h5">Total Location</h2>
-                            <h3 class="mb-1">{{number_format($totalLocation, 0, ",", ".")}}</h3>
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-7 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Total Location</h2>
-                            <h3 class="fw-extrabold mb-2">{{number_format($totalLocation, 0, ",", ".")}}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <span class="slot-name h3"><strong>Parking Place</strong></span>
+    <x-cards.home text="Available Car" adder="slot-avail-car" value="0" icon="fa-solid fa-check-to-slot" />
+    <x-cards.home text="Available Motocycle" adder="slot-avail-motor" value="0" icon="fa-solid fa-check-to-slot" />
+    <x-cards.home text="Slot Used" adder="slot-used" value="0" icon="fa-solid fa-registered" />
 </div>
+<div class="row mt-3">
+    <x-cards.home text="Total Parking" value="{{$totalParking}}" icon="fa-solid fa-square-parking" />
+    <x-cards.home text="Total Location" value="{{$totalLocation}}" icon="fa-solid fa-location-dot" />
+</div>
+@endsection
+
+@section('footer-custom')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+            width: 'resolve'
+        });
+    });
+</script>
+<script>
+    $(document).ready(() => {
+        $('#cariLocation').on('input', function() {
+			var userText = $(this).val();
+
+			$("#datalistOptions").find("option").each(function() {
+			if ($(this).val() == userText) {
+                console.log($(this).val())
+                $.ajax({
+                    url: '{{route('home.index')}}',
+                    dataType: 'json',
+                    data: {
+                        location_name: userText
+                    },
+                    type: 'get',
+                    success: function(data) { // check if available
+                        // console.log('cok', data.slot.name)
+                        $('.slot-avail-motor').text(data.slot.parking_slot[0].slot - data.parking_location[0][1])
+                        $('.slot-avail-car').text(data.slot.parking_slot[1].slot - data.parking_location[1][1])
+                        $('.slot-used').text(data.parking_location[0][1] + data.parking_location[1][1]);
+                        $('.slot-name').text(data.slot.name)
+                    },
+                    error: function() { // error logging
+                        console.log('Error!');
+                    }
+                });
+			}
+			})
+		})
+    })
+</script>
 @endsection
