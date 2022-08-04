@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/notification', [NotificationController::class, 'index']);
 Route::post('/iot/machine', [IotController::class, 'receiver']);
+Route::get('/parkingslot', [NotificationController::class, 'parkingSlot']);
 

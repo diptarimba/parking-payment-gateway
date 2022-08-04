@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ParkingLocation;
+use App\Models\ParkingTransaction;
 use App\Models\PaymentTransaction;
 use App\Models\Setting;
 use Carbon\Carbon;
@@ -63,5 +65,25 @@ class NotificationController extends Controller
                 'posted' => 1
             ]);
         }
+    }
+
+    public function parkingSlot(Request $request)
+    {
+        if($request->location_name !== null){
+            $dataSlot = ParkingLocation::with('parking_slot')->whereName($request->location_name)->first();
+
+            $dataParking = $dataSlot->parking_slot->map(function ($queries) use ($request){
+                $parkVehicle = ParkingTransaction::with('parking_detail')->whereHas('parking_detail', function($query) use ($request, $queries){
+                        $query->whereHas('parking_location', function($query) use ($request){
+                            $query->whereName($request->location_name);
+                        });
+                        $query->where('vehicle_id', $queries->vehicle_id);
+                        $query->whereNull('exit_gate_open');
+                    })->count();
+                return [$queries->vehicle_id, $parkVehicle];
+            });
+        }
+
+        return response()->json(['slot' => $dataSlot->toArray() ?? null, 'parking_location' => $dataParking ?? null]);
     }
 }
