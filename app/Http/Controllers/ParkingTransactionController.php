@@ -175,7 +175,8 @@ class ParkingTransactionController extends Controller
         {
             Transaction::cancel($order_id);
         }
-        $payment_code = $parking->parking_detail->parking_location->location_code.'-'.$code.'-'.substr(strtotime(now()),0,4);
+        $payment_code = $parking->parking_detail->parking_location->location_code.'-'.$code.'-'.substr(strtotime(now()),-4);
+
         $params = array(
             'transaction_details' => array(
                 'order_id' => $payment_code,
