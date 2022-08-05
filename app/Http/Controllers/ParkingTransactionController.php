@@ -138,7 +138,7 @@ class ParkingTransactionController extends Controller
         $add = $parking->parking_detail->vehicle->add;
 
         // Calculate cost
-        $parkingCheck4Cost = ParkingTransaction::with('parking_detail', function($query) use ($parking){
+        $parkingCheck4Cost = ParkingTransaction::whereHas('parking_detail', function($query) use ($parking){
             $query->where('code', $parking->parking_detail->code);
         })->where('user_id', $parking->user_id)->count();
 
