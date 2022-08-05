@@ -14,8 +14,8 @@
     <x-cards.home text="Slot Used" adder="slot-used" value="0" icon="fa-solid fa-registered" />
 </div>
 <div class="row mt-3">
-    <x-cards.home text="Total Parking" value="{{$totalParking}}" icon="fa-solid fa-square-parking" />
-    <x-cards.home text="Total Location" value="{{$totalLocation}}" icon="fa-solid fa-location-dot" />
+    <x-cards.home text="Your Total Parking" value="{{$totalParking}}" icon="fa-solid fa-square-parking" />
+    <x-cards.home text="Your Total Location" value="{{$totalLocation}}" icon="fa-solid fa-location-dot" />
 </div>
 @endsection
 
