@@ -80,7 +80,8 @@ class ParkingHistoryController extends Controller
         $user = Auth::user()->id;
         $validateQr = Carbon::parse(Carbon::now())->isBefore($expired);
         if($validateQr){
-        $qrCode = QrCode::size(200)->generate(json_encode(['user_id' => $user, 'code' => $code, 'expired' => $expired, 'parking_type' => 'checkout']));
+        // $qrCode = QrCode::size(200)->generate(json_encode(['user_id' => $user, 'code' => $code, 'expired' => $expired, 'parking_type' => 'checkout']));
+        $qrCode = QrCode::size(200)->generate(base64_encode(json_encode(['user_id' => $user, 'code' => $code, 'expired' => $expired, 'parking_type' => 'checkout'])));
         $returnData .= '<button id="qr-checkout"class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">QR Check Out</button>
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
