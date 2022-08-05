@@ -59,7 +59,7 @@
           <a href="" class="btn gopay-pay btn-success">Pay Gopay!</a>
           {{-- <a href="path_to_file" class="btn qris-download btn-warning" download="qrcode">Download</a> --}}
           <button class="btn qris-download btn-warning">Download</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+          {{-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button> --}}
         </div>
       </div>
     </div>
