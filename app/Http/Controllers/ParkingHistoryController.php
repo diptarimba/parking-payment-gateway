@@ -19,7 +19,7 @@ class ParkingHistoryController extends Controller
             $parkingHistory = ParkingTransaction::with('parking_detail')
             ->whereHas('parking_detail.payment_transaction', function($query){
                 $query->whereIn('status', ['settlement', 'pending', 'failure']);
-            });
+            })->whereUserId(Auth::user()->id);
             return DataTables::of($parkingHistory)
                 ->addIndexColumn()
                 ->addColumn('check_in', function($query){
@@ -98,7 +98,6 @@ class ParkingHistoryController extends Controller
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Okay!</button>
                 </div>
             </div>
             </div>

@@ -79,7 +79,7 @@ class NotificationController extends Controller
                         });
                         $query->where('vehicle_id', $queries->vehicle_id);
                         $query->whereNull('exit_gate_open');
-                    })->count();
+                    })->groupBy('user_id')->count();
                 return [$queries->vehicle_id, $parkVehicle];
             });
         }
