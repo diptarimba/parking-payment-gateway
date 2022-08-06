@@ -19,6 +19,7 @@
         <x-cards.header title="Ready Check Out"/>
     </x-slot>
     <x-slot name="body">
+        <div class="table-responsive">
         <table class="table table-striped">
             <tbody>
                 <tr>
@@ -39,6 +40,7 @@
                 </tr>
             </tbody>
         </table>
+    </div>
         <button id="pay-button" class="btn btn-success text-white mx-1 my-1">Bayar & Checkout</button>
     </x-slot>
 </x-cards.single>
