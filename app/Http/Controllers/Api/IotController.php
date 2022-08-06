@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ParkingTransaction;
 use Illuminate\Http\Request;
+use Log;
 
 class IotController extends Controller
 {
@@ -12,29 +13,31 @@ class IotController extends Controller
     {
         try{
             $this->validate($request, [
-                'parking_type' => 'required'
+                'command' => 'required'
             ]);
 
             $type = $request->command;
-
+            Log::info($type);
             switch ($type)
             {
                 case $type == 'checkin':
+                    Log::info($request);
                     $this->validate($request,[
                         'timestamp' => 'required',
-                        'data.user_id' => 'required',
                         'vehicle_id' => 'required',
                         'parking_location_id' => 'required',
+                        'data.user_id' => 'required',
                         'data.code' => 'required'
                     ]);
 
                     $parkingCheck = ParkingTransaction::with('parking_detail')
                     ->whereHas('parking_detail', function($query) use ($request){
-                        $query->where('code', $request->data->code);
+                        Log::info($request->data['code']);
+                        $query->where('code', $request->data['code']);
                     })
-                    ->where('user_id', $request->data->user_id)
+                    ->where('user_id', $request->data['user_id'])
                     ->first();
-
+                    Log::info($parkingCheck);
                     if($parkingCheck !== null){
                         $parkingCheckin = ParkingTransaction::create([
                             'check_in' => $parkingCheck->check_out,
@@ -49,13 +52,13 @@ class IotController extends Controller
                     }else{
                         $parkingCheckin = ParkingTransaction::create([
                             'check_in' => $request->timestamp,
-                            'user_id' => $request->data->user_id
+                            'user_id' => $request->data['user_id']
                         ]);
 
                         $parkingCheckin->parking_detail()->create([
                             'vehicle_id' => $request->vehicle_id,
                             'parking_location_id' => $request->parking_location_id,
-                            'code' => $request->data->code
+                            'code' => $request->data['code']
                         ]);
                     }
                     return response()->json(['status' => 'Check-in Success']);
@@ -68,10 +71,10 @@ class IotController extends Controller
                     ]);
                     $parkingCheckout = ParkingTransaction::with('parking_detail')
                     ->whereHas('parking_detail', function($query) use ($request){
-                        $query->where('code', $request->data->code);
+                        $query->where('code', $request->data['code']);
                     })
-                    ->where('user_id', $request->data->user_id)->get();
-                    $parkingCheckout->parking_detail()->update([
+                    ->where('user_id', $request->data['user_id'])->first();
+                    $parkingCheckout->parking_detail->update([
                         'exit_gate_open' => $request->timestamp
                     ]);
                     return response()->json(['status' => 'Check-out Success']);
@@ -79,8 +82,8 @@ class IotController extends Controller
             }
         }
         catch(\Throwable $e){
-            // return response()->json($e->getMessage());
-            return response()->json($request->toArray());
+            return response()->json($e->getMessage());
+            // return response()->json($request->toArray());
         }
     }
 }

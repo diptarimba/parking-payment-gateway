@@ -26,7 +26,7 @@ class CheckinSeeder extends Seeder
         $parkingCheckin = ParkingTransaction::create([
             //'check_in' => Carbon::now()->subHours(rand(1,10))->format('Y-m-d H:i:s'),
             'check_in' => Carbon::now()->format('Y-m-d H:i:s'),
-            'user_id' => 1
+            'user_id' => 101
         ]);
 
         $parkingCheckin->parking_detail()->create([
