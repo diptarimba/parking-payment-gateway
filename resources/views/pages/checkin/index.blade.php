@@ -14,8 +14,8 @@
         </x-slot>
         <x-slot name="body">
             <div class="text-center">
-                {{-- {!! QrCode::size(200)->generate(base64_encode(json_encode(['user_id' => $user, 'code' => $code, 'parking_type' => 'checkin']))) !!} --}}
-                {!! QrCode::size(200)->generate(json_encode(['user_id' => $user, 'code' => $code, 'parking_type' => 'checkin'])) !!}
+                {!! QrCode::size(200)->generate(base64_encode(json_encode(['user_id' => $user, 'code' => $code, 'parking_type' => 'checkin']))) !!}
+                {{-- {!! QrCode::size(200)->generate(json_encode(['user_id' => $user, 'code' => $code, 'parking_type' => 'checkin'])) !!} --}}
                 <p class="notify">Waiting for scanning</p>
             </div>
         </x-slot>

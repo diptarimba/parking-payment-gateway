@@ -44,6 +44,7 @@
         var table = $('.datatables-target-exec').DataTable({
         processing: true,
         serverSide: true,
+        searching: false,
         ajax: "{{ route('history.index') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', sortable: false, orderable: false,
