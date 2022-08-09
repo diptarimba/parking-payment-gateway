@@ -20,6 +20,7 @@
         <x-cards.header title="Checkout"/>
     </x-slot>
     <x-slot name="body">
+        <div class="table-responsive">
         <table class="table table-striped">
             <tbody>
                 <tr>
@@ -52,6 +53,7 @@
                 </tr>
             </tbody>
         </table>
+    </div>
         <div class="text-end"><a href="?print=true" class="mx-1 my-1 btn btn-primary">Print</a></div>
     </x-slot>
 </x-cards.single>
