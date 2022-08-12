@@ -59,13 +59,15 @@ class ParkingTransactionController extends Controller
                 })->first();
                 $exists = $check == null ? 0 : 1;
             }
+            $paramType = 'checkin';
         }else{
             // Menggunakan Code Lama, karena orangnya belum keluar
             $code = $parkingCheck->parking_detail->code;
+            $paramType = 'recheckin';
         }
 
 
-        return view('pages.checkin.index', compact('code', 'user'));
+        return view('pages.checkin.index', compact('code', 'user', 'paramType'));
     }
 
     public function checkin_post(Request $request)
