@@ -17,11 +17,11 @@ class IotController extends Controller
             ]);
 
             $type = $request->command;
-            Log::info($type);
+
             switch ($type)
             {
-                case $type == 'checkin':
-                    Log::info($request);
+                case $type == 'checkin' || $type == 'recheckin':
+
                     $this->validate($request,[
                         'timestamp' => 'required',
                         'vehicle_id' => 'required',
@@ -32,12 +32,13 @@ class IotController extends Controller
 
                     $parkingCheck = ParkingTransaction::with('parking_detail')
                     ->whereHas('parking_detail', function($query) use ($request){
-                        Log::info($request->data['code']);
                         $query->where('code', $request->data['code']);
                     })
                     ->where('user_id', $request->data['user_id'])
                     ->first();
+
                     Log::info($parkingCheck);
+
                     if($parkingCheck !== null){
                         $parkingCheckin = ParkingTransaction::create([
                             'check_in' => $parkingCheck->check_out,
@@ -73,7 +74,7 @@ class IotController extends Controller
                     ->whereHas('parking_detail', function($query) use ($request){
                         $query->where('code', $request->data['code']);
                     })
-                    ->where('user_id', $request->data['user_id'])->first();
+                    ->where('user_id', $request->data['user_id']);
                     $parkingCheckout->parking_detail->update([
                         'exit_gate_open' => $request->timestamp
                     ]);
