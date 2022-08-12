@@ -74,10 +74,17 @@ class IotController extends Controller
                     ->whereHas('parking_detail', function($query) use ($request){
                         $query->where('code', $request->data['code']);
                     })
-                    ->where('user_id', $request->data['user_id']);
-                    $parkingCheckout->parking_detail->update([
-                        'exit_gate_open' => $request->timestamp
-                    ]);
+                    ->where('user_id', $request->data['user_id'])->get();
+                    $parkingCheckout->map(function($query) use ($request){
+                        $query->parking_detail->update(
+                        [
+                         'exit_gate_open' => $request->timestamp
+                        ]);
+                        });
+                    // $parkingCheckout->parking_detail()->update([
+                    //     'exit_gate_open' => $request->timestamp
+                    // ]);
+
                     return response()->json(['status' => 'Check-out Success']);
                     break;
             }
