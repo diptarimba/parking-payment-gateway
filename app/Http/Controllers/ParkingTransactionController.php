@@ -179,21 +179,34 @@ class ParkingTransactionController extends Controller
         }
         $payment_code = $parking->parking_detail->parking_location->location_code.'-'.$code.'-'.substr(strtotime(now()),-4);
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => $payment_code,
-                'gross_amount' => $cost,
-            ),
-            'customer_details' => array(
-                'first_name' => $parking->user->name,
-                'email' => $parking->user->email,
-            ),
-            'payment_type' => 'gopay',
-            'gopay' => array(
-                'enable_callback' =>  true,
-                'callback_url' =>  route('history.index')
-            )
-        );
+        if (config('midtrans.is_production') == true) {
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => $payment_code,
+                    'gross_amount' => $cost,
+                ),
+                'customer_details' => array(
+                    'first_name' => $parking->user->name,
+                    'email' => $parking->user->email,
+                ),
+            );
+        } else {
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => $payment_code,
+                    'gross_amount' => $cost,
+                ),
+                'customer_details' => array(
+                    'first_name' => $parking->user->name,
+                    'email' => $parking->user->email,
+                ),
+                'payment_type' => 'gopay',
+                'gopay' => array(
+                    'enable_callback' =>  true,
+                    'callback_url' =>  route('history.index')
+                )
+            );
+        }
         // Generate Request
         $response = CoreApi::charge($params);
         Log::info(json_encode($response));
