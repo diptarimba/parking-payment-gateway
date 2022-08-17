@@ -143,6 +143,7 @@ return [
         // 'store'  => 'redis',
     ],
 
+    'force_https' => env('FORCE_HTTPS'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
