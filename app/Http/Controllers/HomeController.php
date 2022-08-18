@@ -15,6 +15,9 @@ class HomeController extends Controller
         if($request->ajax()){
             if($request->location_name !== null){
                 $dataSlot = ParkingLocation::with('parking_slot')->whereName($request->location_name)->first();
+                if($dataSlot == null){
+                    return response()->json(['slot' => [], 'parking_location' => []]);
+                }
 
                 $dataParking = $dataSlot->parking_slot->map(function ($queries) use ($request){
                     $parkVehicle = ParkingTransaction::with('parking_detail')->whereHas('parking_detail', function($query) use ($request, $queries){
