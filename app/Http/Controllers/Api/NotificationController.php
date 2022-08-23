@@ -53,7 +53,7 @@ class NotificationController extends Controller
             'vehicle' => $parking->parking_detail->vehicle->name,
             'amount' => $parking->amount,
             'check_in' => $parking->parking_detail->parking_transaction->check_in,
-            'check_out' => $parking->parking_detail->parking_transaction->check_in,
+            'check_out' => $parking->parking_detail->parking_transaction->check_out,
             'payment_status' => $parking->status,
             'payment_type' => $parking->payment_type
         ]);
