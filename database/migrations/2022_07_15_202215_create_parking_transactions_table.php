@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('parking_transactions', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('check_in');
-            $table->timestamp('check_out')->nullable();
+            $table->string('check_in');
+            $table->string('check_out')->nullable();
             $table->boolean('posted')->default(0);
             $table->unsignedBigInteger('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
